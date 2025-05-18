@@ -10,6 +10,8 @@
 # To build for GPU, use a command like:
 # $ sudo docker build --build-arg=FROM_IMAGE=nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 --build-arg=DV_GPU_BUILD=1 -t deepvariant_gpu .
 
+# build avx-512  docker build -t daylilyinformatics/deepvariant-avx512:1.9.0   --build-arg TF_COPT_FLAGS="-march=native -mavx512f -mavx512vl -mavx512bw -mavx512dq -mavx512vnni -mavx512bf16 -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mamx-int8 -mamx-tile -mamx-bf16 -O3 -mfma" .
+
 
 ARG FROM_IMAGE=ubuntu:22.04
 # PYTHON_VERSION is also set in settings.sh.
@@ -30,8 +32,11 @@ COPY --from=conda_setup /opt/conda /opt/conda
 LABEL maintainer="https://github.com/google/deepvariant/issues"
 
 ARG DV_GPU_BUILD
+ARG TF_COPT_FLAGS  # <--- explicitly add this line
+
 ENV DV_GPU_BUILD=${DV_GPU_BUILD}
 ENV DV_BIN_PATH=/opt/deepvariant/bin
+ENV TF_COPT_FLAGS=${TF_COPT_FLAGS}  # <--- explicitly add this line
 
 # Copying DeepVariant source code
 COPY . /opt/deepvariant
@@ -45,6 +50,7 @@ RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
          "Acquire::https::proxy \"$https_proxy\";" > "/etc/apt/apt.conf"
 
 RUN ./build-prereq.sh \
+  && export TF_COPT_FLAGS="${TF_COPT_FLAGS}" \  # <-- explicitly add this line
   && PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh  # PATH for bazel
 
 FROM ${FROM_IMAGE}
