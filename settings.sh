@@ -32,7 +32,8 @@
 
 # Set this to 1 if the system image already has TensorFlow preinstalled.  This
 # will skip the installation of TensorFlow.
-export DV_USE_PREINSTALLED_TF="${DV_USE_PREINSTALLED_TF:-0}"
+#export DV_USE_PREINSTALLED_TF="${DV_USE_PREINSTALLED_TF:-0}"
+export DV_USE_PREINSTALLED_TF=0
 
 export DV_USE_GCP_OPTIMIZED_TF_WHL=0
 export TF_COPT_FLAGS="-march=native -mavx512f -mavx512vl -mavx512bw -mavx512dq -mavx512vnni -mavx512bf16 -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mamx-int8 -mamx-tile -mamx-bf16 -O3 -mfma"
