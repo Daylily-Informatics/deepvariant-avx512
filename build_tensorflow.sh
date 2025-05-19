@@ -4,6 +4,8 @@
 sudo apt-get update
 sudo apt-get install -y python3-dev python3-pip git bazel build-essential \
     clang-14 gcc-12 g++-12 libstdc++-12-dev
+sudo apt-get update
+sudo apt-get install -y patchelf
 
 # Create clean Python virtual environment
 python3 -m pip install --upgrade pip virtualenv
