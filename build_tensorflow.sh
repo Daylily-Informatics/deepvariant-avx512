@@ -58,6 +58,8 @@ bazel --output_user_root=$PWD/tmppl3 build \
   --host_cxxopt="-isystem/usr/include/x86_64-linux-gnu/c++/12" \
   //tensorflow/tools/pip_package:build_pip_package
 
+
+echo "there is a system pkg needing to be installed to solve an error thrown by the next command... what was it..."
 # After successful build, generate wheel:
 ./bazel-bin/tensorflow/tools/pip_package/build_pip_package ../tensorflow_pkg
 
