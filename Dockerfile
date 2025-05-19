@@ -55,6 +55,10 @@ RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
 # Install prerequisites first
 RUN ./build-prereq.sh
 
+# Explicitly install Python first
+RUN apt-get update && apt-get install -y python${PYTHON_VERSION} python${PYTHON_VERSION}-dev python3-pip && \
+    ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+
 # Add these two lines explicitly
 COPY tensorflow_pkg/*.whl /tmp/
 RUN python${PYTHON_VERSION} -m pip install --upgrade pip && \
