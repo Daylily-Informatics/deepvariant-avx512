@@ -48,9 +48,22 @@ WORKDIR /opt/deepvariant
 RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
          "Acquire::https::proxy \"$https_proxy\";" > "/etc/apt/apt.conf"
 
-RUN ./build-prereq.sh \
-  && export TF_COPT_FLAGS="${TF_COPT_FLAGS}" \ 
-  && PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh  # PATH for bazel
+#RUN ./build-prereq.sh \
+#  && export TF_COPT_FLAGS="${TF_COPT_FLAGS}" \ 
+#  && PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh  # PATH for bazel
+
+# Install prerequisites first
+RUN ./build-prereq.sh
+
+# Add these two lines explicitly
+COPY tensorflow_pkg/*.whl /tmp/
+RUN python${PYTHON_VERSION} -m pip install --upgrade pip && \
+    python${PYTHON_VERSION} -m pip install /tmp/tensorflow-*.whl
+
+# Now build DeepVariant binaries (TensorFlow is already installed, so no rebuild)
+RUN export TF_COPT_FLAGS="${TF_COPT_FLAGS}" && \
+    PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh
+
 
 FROM ${FROM_IMAGE}
 ARG DV_GPU_BUILD
