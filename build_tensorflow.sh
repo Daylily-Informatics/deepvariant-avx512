@@ -35,7 +35,7 @@ yes "" | ./configure
 
 
 # Build the optimized wheel
-if bazel --output_user_root=/dev/shm/  build \
+if bazel --output_user_root=/dev/shm/bzl  build \
   --config=opt \
   --action_env=BAZEL_CXXOPTS="-std=c++17 -stdlib=libstdc++" \
   --cxxopt="-std=c++17" \
