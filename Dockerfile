@@ -56,17 +56,22 @@ RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
 RUN ./build-prereq.sh
 
 # Explicitly install Python first
-RUN apt-get update && apt-get install -y python${PYTHON_VERSION} python${PYTHON_VERSION}-dev python3-pip && \
-    ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python
+RUN apt-get install -y python3.10 python3.10-dev python3-pip &&  mkdir -p /usr/bin &&  ln -sf /usr/bin/python3.10 /usr/bin/python3;
+RUN python -m pip install --upgrade pip;
+
+#RUN apt-get update && apt-get install -y python${PYTHON_VERSION} python${PYTHON_VERSION}-dev python3-pip && \
+#    ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python \
+#    python -m pip install --upgrade pip
 
 # Add these two lines explicitly
 COPY tensorflow_pkg/*.whl /tmp/
-RUN python${PYTHON_VERSION} -m pip install --upgrade pip && \
-    python${PYTHON_VERSION} -m pip install /tmp/tensorflow-*.whl
+RUN python${PYTHON_VERSION} -m pip install /tmp/tensorflow-*.whl
+
+RUN git clone -b v2.15.0 --depth 1 https://github.com/tensorflow/tensorflow.git ../tensorflow
 
 # Now build DeepVariant binaries (TensorFlow is already installed, so no rebuild)
 RUN export TF_COPT_FLAGS="${TF_COPT_FLAGS}" && \
-    PATH="${HOME}/bin:${PATH}" ./build_release_binaries.sh
+    PATH="${HOME}/bin:${PATH}"  DV_SKIP_TENSORFLOW_BUILD=1  ./build_release_binaries.sh
 
 
 FROM ${FROM_IMAGE}
