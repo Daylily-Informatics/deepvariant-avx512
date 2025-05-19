@@ -10,3 +10,9 @@ sudo chmod +x /usr/local/bin/bazel
 
 # Verify bazel is installed correctly
 bazel --version
+
+sudo apt update
+sudo apt install -y clang llvm
+
+sudo apt-get update
+sudo apt-get install -y build-essential clang-14 libc++-14-dev libc++abi-14-dev libstdc++-12-dev
