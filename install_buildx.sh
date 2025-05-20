@@ -1,0 +1,6 @@
+#not as root
+ BUILDX_VERSION=$(curl -s https://api.github.com/repos/docker/buildx/releases/latest | grep tag_name | cut -d '"' -f 4)
+ curl -LO "https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.linux-amd64"
+ chmod +x buildx-${BUILDX_VERSION}.linux-amd64
+ mv buildx-${BUILDX_VERSION}.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+ docker buildx version

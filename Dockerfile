@@ -10,7 +10,7 @@
 # To build for GPU, use a command like:
 # $ sudo docker build --build-arg=FROM_IMAGE=nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 --build-arg=DV_GPU_BUILD=1 -t deepvariant_gpu .
 # build avx-512  docker build -t daylilyinformatics/deepvariant-avx512:1.9.0   --build-arg TF_COPT_FLAGS="-march=native -mavx512f -mavx512vl -mavx512bw -mavx512dq -mavx512vnni -mavx512bf16 -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mamx-int8 -mamx-tile -mamx-bf16 -O3 -mfma" .
-
+#  sudo DOCKER_BUILDKIT=1 docker build     --build-arg TF_COPT_FLAGS="-march=native -mavx512f -mavx512vl -mavx512bw -mavx512dq -mavx512vnni -mavx512bf16 -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mamx-int8 -mamx-tile -mamx-bf16 -O3 -mfma"     --progress=plain     -t daylilyinformatics/deepvariant-avx512:1.9.0b     . && sudo docker push daylilyinformatics/deepvariant-avx512:1.9.0b
 
 ARG FROM_IMAGE=ubuntu:22.04
 # PYTHON_VERSION is also set in settings.sh.
