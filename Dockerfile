@@ -70,7 +70,7 @@ RUN apt-get update && \
 COPY tensorflow_pkg/*.whl /tmp/
 RUN python${PYTHON_VERSION} -m pip install /tmp/tensorflow-*.whl
 
-RUN git clone -b v2.15.0 --depth 1 https://github.com/tensorflow/tensorflow.git ../tensorflow
+#RUN git clone -b v2.15.0 --depth 1 https://github.com/tensorflow/tensorflow.git ../tensorflow
 
 # Now build DeepVariant binaries (TensorFlow is already installed, so no rebuild)
 RUN export TF_COPT_FLAGS="${TF_COPT_FLAGS}" && \
