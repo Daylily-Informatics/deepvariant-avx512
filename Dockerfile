@@ -55,9 +55,12 @@ RUN echo "Acquire::http::proxy \"$http_proxy\";\n" \
 # Install prerequisites first
 RUN ./build-prereq.sh
 
-# Explicitly install Python first
-RUN apt-get install -y python3.10 python3.10-dev python3-pip &&  mkdir -p /usr/bin &&  ln -sf /usr/bin/python3.10 /usr/bin/python3;
-RUN python3 -m pip3 install --upgrade pip;
+# Install Python explicitly
+RUN apt-get update && \
+    apt-get install -y python3.10 python3.10-dev python3-pip && \
+    ln -sf /usr/bin/python3.10 /usr/bin/python3 && \
+    ln -sf /usr/bin/python3.10 /usr/bin/python && \
+    python3 -m pip install --upgrade pip
 
 #RUN apt-get update && apt-get install -y python${PYTHON_VERSION} python${PYTHON_VERSION}-dev python3-pip && \
 #    ln -s /usr/bin/python${PYTHON_VERSION} /usr/bin/python \
@@ -65,7 +68,7 @@ RUN python3 -m pip3 install --upgrade pip;
 
 # Add these two lines explicitly
 COPY tensorflow_pkg/*.whl /tmp/
-RUN python${PYTHON_VERSION} -m pip3 install /tmp/tensorflow-*.whl
+RUN python${PYTHON_VERSION} -m pip install /tmp/tensorflow-*.whl
 
 RUN git clone -b v2.15.0 --depth 1 https://github.com/tensorflow/tensorflow.git ../tensorflow
 
